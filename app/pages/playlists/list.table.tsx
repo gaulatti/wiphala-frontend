@@ -1,5 +1,5 @@
 import { Button } from '@radix-ui/themes';
-import { type ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, type SortingState, useReactTable } from '@tanstack/react-table';
+import { type ColumnDef, flexRender, getCoreRowModel, type SortingState, useReactTable } from '@tanstack/react-table';
 import { ArrowUpDown } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Method, useAPI } from '~/clients/api';
@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~
 
 export type Playlist = {
   slug: string;
-  status: 'pending' | 'processing' | 'success' | 'failed';
+  status: 'CREATED' | 'RUNNING' | 'FAILED' | 'COMPLETE';
   current_slot: number | null;
   strategy: { slug: string; name: string };
   created_at: string;
@@ -51,14 +51,21 @@ const DataTable = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(25);
   const [sorting, setSorting] = useState<SortingState>([]);
-  const queryParams = useMemo(() => ({ page, pageSize, sorting }), [page, pageSize, sorting]);
+
+  const sortingParams = useMemo(() => {
+    if (sorting.length > 0) {
+      return { sort: sorting[0].id, order: sorting[0].desc ? 'desc' : 'asc' };
+    }
+    return {};
+  }, [sorting]);
+
+  const queryParams = useMemo(() => ({ page, pageSize, ...sortingParams }), [page, pageSize, sortingParams]);
   const { data, loading, error } = useAPI(Method.GET, [], `playlists`, queryParams);
 
   const table = useReactTable({
-    data: data?.rows,
+    data: data?.rows ?? [],
     columns,
     getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
     state: {
       sorting,
@@ -106,7 +113,6 @@ const DataTable = () => {
           <Button variant='outline' size={'1'} onClick={() => setPage(Math.max(page - 1, 1))} disabled={page === 1}>
             Previous
           </Button>
-
           <Button variant='outline' size={'1'} onClick={() => setPage(page + 1)} disabled={page * pageSize >= data?.count}>
             Next
           </Button>
