@@ -1,11 +1,19 @@
 import { Button } from '@radix-ui/themes';
 import { type ColumnDef, flexRender, getCoreRowModel, type SortingState, useReactTable } from '@tanstack/react-table';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
+import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { Method, useAPI } from '~/clients/api';
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
-
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
 export type Playlist = {
   slug: string;
   status: 'CREATED' | 'RUNNING' | 'FAILED' | 'COMPLETE';
@@ -34,7 +42,27 @@ export const columns: ColumnDef<Playlist>[] = [
   },
   {
     accessorKey: 'created_at',
-    header: 'Created',
+    header: ({ column }) => (
+      <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+        Created
+        <ArrowUpDown className='ml-2 h-4 w-4' />
+      </Button>
+    ),
+    cell: ({ row }) => {
+      const value = row.getValue('created_at');
+      return value ? (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>{moment().diff(value, 'hours') < 24 ? moment(value).fromNow() : moment(value).format('MMM D, YYYY [at] HH:mm')}</TooltipTrigger>
+            <TooltipContent>
+              <>{value}</>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        ''
+      );
+    },
   },
   {
     accessorKey: 'updated_at',
@@ -44,6 +72,45 @@ export const columns: ColumnDef<Playlist>[] = [
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </Button>
     ),
+    cell: ({ row }) => {
+      const value = row.getValue('updated_at');
+      return value ? (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>{moment().diff(value, 'hours') < 24 ? moment(value).fromNow() : moment(value).format('MMM D, YYYY [at] HH:mm')}</TooltipTrigger>
+            <TooltipContent>
+              <>{value}</>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        ''
+      );
+    },
+  },
+  {
+    id: 'actions',
+    cell: ({ row }) => {
+      const item = row.original;
+
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant='ghost' className='h-8 w-8 p-0'>
+              <span className='sr-only'>Open menu</span>
+              <MoreHorizontal className='h-4 w-4' />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align='end'>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(item.slug)}>Copy payment ID</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem>View customer</DropdownMenuItem>
+            <DropdownMenuItem>View payment details</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
   },
 ];
 
