@@ -1,6 +1,7 @@
 import { Flex } from '@radix-ui/themes';
 import { useSelector } from 'react-redux';
 import { Navigate, Outlet } from 'react-router';
+import { OverlaySpinner } from '~/components/spinners';
 import { useAuthStatus } from '~/hooks/useAuth';
 import { getKickoffReady } from '~/state/selectors/lifecycle';
 
@@ -32,7 +33,7 @@ const PrivateLayout = () => {
    * Renders a loading spinner if the user is not authenticated
    * or the kickoff is not ready.
    */
-  return <pre>spinner</pre>;
+  return <OverlaySpinner />;
 };
 
 export default PrivateLayout;
