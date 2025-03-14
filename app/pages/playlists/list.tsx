@@ -4,9 +4,7 @@ import { DataTable } from './list.table';
 
 const PlaylistsList = () => {
   return (
-    <Container>
       <DataTable />
-    </Container>
   );
 };
 

@@ -116,7 +116,7 @@ export const columns: ColumnDef<Playlist>[] = [
 
 const DataTable = () => {
   const [page, setPage] = useState(1);
-  const [pageSize] = useState(25);
+  const [pageSize] = useState(20);
   const [sorting, setSorting] = useState<SortingState>([]);
 
   const sortingParams = useMemo(() => {
@@ -141,7 +141,7 @@ const DataTable = () => {
   });
 
   return (
-    <div>
+    <div className='m-4'>
       <div className='rounded-md border'>
         <Table>
           <TableHeader>
