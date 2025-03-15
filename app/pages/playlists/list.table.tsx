@@ -2,7 +2,7 @@ import { Button, Link } from '@radix-ui/themes';
 import { type ColumnDef, flexRender, getCoreRowModel, type SortingState, useReactTable } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import moment from 'moment';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { NavLink } from 'react-router';
 import { Method, useAPI } from '~/clients/api';
 import { PaginationControls } from '~/components/pagination-controls';
@@ -16,6 +16,8 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+import { useRandom } from '~/hooks/useRandom';
+import { useSSE } from '~/hooks/useSSE';
 
 export type Playlist = {
   slug: string;
@@ -144,7 +146,17 @@ export const columns: ColumnDef<Playlist>[] = [
 const DataTable = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
+  const [random, randomize] = useRandom();
   const [sorting, setSorting] = useState<SortingState>([{ id: 'updated_at', desc: true }]);
+  const { lastMessage } = useSSE();
+
+  useEffect(() => {
+    const { action } = JSON.parse(lastMessage ?? '{}');
+    if (action == 'REFRESH_PLAYLISTS') {
+      randomize();
+    }
+  }, [lastMessage]);
+
 
   const sortingParams = useMemo(() => {
     if (sorting.length > 0) {
@@ -153,8 +165,8 @@ const DataTable = () => {
     return {};
   }, [sorting]);
 
-  const queryParams = useMemo(() => ({ page, pageSize, ...sortingParams }), [page, pageSize, sortingParams]);
-  const { data, loading, error } = useAPI(Method.GET, [], `playlists`, queryParams);
+  const queryParams = useMemo(() => ({ page, pageSize, random, ...sortingParams }), [page, pageSize, sortingParams, random]);
+  const { data } = useAPI(Method.GET, [], `playlists`, queryParams);
 
   const table = useReactTable({
     data: data?.rows ?? [],
