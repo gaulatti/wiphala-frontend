@@ -37,12 +37,6 @@ const data = {
       url: '/playlists',
       icon: SquareTerminal,
       isActive: true,
-      items: [
-        {
-          title: 'All Playlists',
-          url: '/playlists',
-        },
-      ],
     },
   ],
   projects: [
