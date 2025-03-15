@@ -3,8 +3,72 @@
 @custom-variant dark (&:is(.dark *));
 @import "tailwindcss";
 
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-Black.woff2') format('woff2');
+  font-weight: 900;
+  /* Black */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-Bold.woff2') format('woff2');
+  font-weight: 700;
+  /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  /* Extra Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-Light.woff2') format('woff2');
+  font-weight: 300;
+  /* Light */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-Medium.woff2') format('woff2');
+  font-weight: 500;
+  /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-Normal.woff2') format('woff2');
+  font-weight: 400;
+  /* Normal */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RNSSanz';
+  src: url('/fonts/RNSSanz-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  /* Semi Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Comodo';
+  src: url('/fonts/Comodo-Regular.woff2') format('woff2');
+  font-weight: 400;
+  /* Normal */
+  font-style: normal;
+}
+
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+  --font-sans: "RNSSanz", ui-sans-serif, system-ui, sans-serif,
     "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
 
@@ -128,7 +192,13 @@ body {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.radix-themes {
+  --default-font-family: "RNSSanz", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
 }
