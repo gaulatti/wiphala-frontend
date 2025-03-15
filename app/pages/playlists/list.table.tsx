@@ -1,9 +1,9 @@
-import { Button } from '@radix-ui/themes';
+import { Button, Link } from '@radix-ui/themes';
 import { type ColumnDef, flexRender, getCoreRowModel, type SortingState, useReactTable } from '@tanstack/react-table';
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
-import { Link } from 'react-router';
+import { NavLink } from 'react-router';
 import { Method, useAPI } from '~/clients/api';
 import {
   DropdownMenu,
@@ -32,8 +32,10 @@ export const columns: ColumnDef<Playlist>[] = [
       const value = row.getValue('slug');
       return (
         value && (
-          <Link to={`/playlists/${value}`}>
-            <>{value}</>
+          <Link asChild>
+            <NavLink to={`/playlists/${value}`}>
+              <>{value}</>
+            </NavLink>
           </Link>
         )
       );
