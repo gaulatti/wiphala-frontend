@@ -130,7 +130,7 @@ export const columns: ColumnDef<Playlist>[] = [
 const DataTable = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'updated_at', desc: true }]);
 
   const sortingParams = useMemo(() => {
     if (sorting.length > 0) {
