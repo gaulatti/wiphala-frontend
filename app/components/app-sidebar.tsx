@@ -64,6 +64,12 @@ const data = {
       icon: SquareTerminal,
       isActive: true,
     },
+    {
+      title: 'Strategies',
+      url: '/strategies',
+      icon: SquareTerminal,
+      isActive: true,
+    },
   ],
   projects: [
     {
