@@ -28,13 +28,13 @@ export const columns: ColumnDef<Playlist>[] = [
   {
     accessorKey: 'slug',
     header: 'Slug',
-    cell: ({ row }) => {
-      const value = row.getValue('slug');
+    cell: ({ cell }) => {
+      const value = cell.getValue();
       return (
         value && (
           <Link asChild>
             <NavLink to={`/playlists/${value}`}>
-              <>{value}</>
+              <code><>{value}</></code>
             </NavLink>
           </Link>
         )
@@ -50,8 +50,20 @@ export const columns: ColumnDef<Playlist>[] = [
     header: 'Current Slot',
   },
   {
-    accessorKey: 'strategy.name',
+    accessorKey: 'strategy',
     header: 'Strategy',
+    cell: ({ cell }) => {
+      const value = cell.getValue() as { slug: string, name: string };
+      return (
+        value && (
+          <Link asChild>
+            <NavLink to={`/strategies/${value.slug}`}>
+              <>{value.name}</>
+            </NavLink>
+          </Link>
+        )
+      );
+    },
   },
   {
     accessorKey: 'created_at',
@@ -61,8 +73,8 @@ export const columns: ColumnDef<Playlist>[] = [
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </Button>
     ),
-    cell: ({ row }) => {
-      const value = row.getValue('created_at');
+    cell: ({ cell }) => {
+      const value = cell.getValue();
       return value ? (
         <TooltipProvider>
           <Tooltip>
@@ -85,8 +97,8 @@ export const columns: ColumnDef<Playlist>[] = [
         <ArrowUpDown className='ml-2 h-4 w-4' />
       </Button>
     ),
-    cell: ({ row }) => {
-      const value = row.getValue('updated_at');
+    cell: ({ cell }) => {
+      const value = cell.getValue();
       return value ? (
         <TooltipProvider>
           <Tooltip>
