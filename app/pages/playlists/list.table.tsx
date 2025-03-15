@@ -5,6 +5,7 @@ import moment from 'moment';
 import { useMemo, useState } from 'react';
 import { NavLink } from 'react-router';
 import { Method, useAPI } from '~/clients/api';
+import { PaginationControls } from '~/components/pagination-controls';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +16,7 @@ import {
 } from '~/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
+
 export type Playlist = {
   slug: string;
   status: 'CREATED' | 'RUNNING' | 'FAILED' | 'COMPLETE';
@@ -165,6 +167,11 @@ const DataTable = () => {
     manualPagination: true,
   });
 
+  /**
+   * Calculate the total number of pages based on the total number of rows and the page size.
+   */
+  const totalPages = useMemo(() => Math.ceil((data?.count || 0) / pageSize), [data, pageSize]);
+
   return (
     <div className='m-4'>
       <div className='rounded-md border'>
@@ -198,17 +205,7 @@ const DataTable = () => {
         </Table>
       </div>
       <div className='flex items-center justify-between space-x-2 py-4'>
-        <span>
-          Page {page} of {Math.ceil(data?.count / pageSize)}
-        </span>
-        <div>
-          <Button variant='outline' size={'1'} onClick={() => setPage(Math.max(page - 1, 1))} disabled={page === 1}>
-            Previous
-          </Button>
-          <Button variant='outline' size={'1'} onClick={() => setPage(page + 1)} disabled={page * pageSize >= data?.count}>
-            Next
-          </Button>
-        </div>
+        <PaginationControls currentPage={page} totalPages={totalPages} onPageChange={setPage} />
       </div>
     </div>
   );
