@@ -4,7 +4,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Separator } from '~/components/ui/separator';
 import { SidebarTrigger } from '~/components/ui/sidebar';
 
-const PlaylistsDetail = () => {
+const PlaylistDetail = () => {
   const { slug } = useParams();
   const { data } = useAPI(Method.GET, [], `playlists/${slug}`);
   return <>
@@ -33,4 +33,4 @@ const PlaylistsDetail = () => {
   </>;
 };
 
-export default PlaylistsDetail;
+export default PlaylistDetail;
