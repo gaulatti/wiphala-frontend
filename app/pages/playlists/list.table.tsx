@@ -3,6 +3,7 @@ import { type ColumnDef, flexRender, getCoreRowModel, type SortingState, useReac
 import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
 import moment from 'moment';
 import { useMemo, useState } from 'react';
+import { Link } from 'react-router';
 import { Method, useAPI } from '~/clients/api';
 import {
   DropdownMenu,
@@ -27,6 +28,16 @@ export const columns: ColumnDef<Playlist>[] = [
   {
     accessorKey: 'slug',
     header: 'Slug',
+    cell: ({ row }) => {
+      const value = row.getValue('slug');
+      return (
+        value && (
+          <Link to={`/playlists/${value}`}>
+            <>{value}</>
+          </Link>
+        )
+      );
+    },
   },
   {
     accessorKey: 'status',
