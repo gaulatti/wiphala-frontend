@@ -1,7 +1,6 @@
 import { Button, Link } from '@radix-ui/themes';
 import { type ColumnDef, flexRender, getCoreRowModel, type SortingState, useReactTable } from '@tanstack/react-table';
-import { ArrowUpDown, MoreHorizontal } from 'lucide-react';
-import moment from 'moment';
+import { MoreHorizontal } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { NavLink } from 'react-router';
 import { Method, useAPI } from '~/clients/api';
@@ -15,7 +14,6 @@ import {
   DropdownMenuTrigger,
 } from '~/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '~/components/ui/table';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/components/ui/tooltip';
 
 export type Strategy = {
   slug: string;
@@ -52,22 +50,23 @@ export const columns: ColumnDef<Strategy>[] = [
     accessorKey: 'root_slot',
     header: 'Root Slot',
   },
-  {
-    accessorKey: 'team',
-    header: 'Team',
-    cell: ({ cell }) => {
-      const value = cell.getValue() as { slug: string, name: string };
-      return (
-        value && (
-          <Link asChild>
-            <NavLink to={`/strategies/${value.slug}`}>
-              <>{value.name}</>
-            </NavLink>
-          </Link>
-        )
-      );
-    },
-  },
+  // TODO: Uncomment once teams are implemented.
+  // {
+  //   accessorKey: 'team',
+  //   header: 'Team',
+  //   cell: ({ cell }) => {
+  //     const value = cell.getValue() as { slug: string, name: string };
+  //     return (
+  //       value && (
+  //         <Link asChild>
+  //           <NavLink to={`/strategies/${value.slug}`}>
+  //             <>{value.name}</>
+  //           </NavLink>
+  //         </Link>
+  //       )
+  //     );
+  //   },
+  // },
   {
     id: 'actions',
     cell: ({ row }) => {
