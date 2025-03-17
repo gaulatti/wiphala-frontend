@@ -69,54 +69,6 @@ export const columns: ColumnDef<Strategy>[] = [
     },
   },
   {
-    accessorKey: 'created_at',
-    header: ({ column }) => (
-      <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-        Created
-        <ArrowUpDown className='ml-2 h-4 w-4' />
-      </Button>
-    ),
-    cell: ({ cell }) => {
-      const value = cell.getValue();
-      return value ? (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>{moment().diff(value, 'hours') < 24 ? moment(value).fromNow() : moment(value).format('MMM D, YYYY [at] HH:mm')}</TooltipTrigger>
-            <TooltipContent>
-              <>{value}</>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ) : (
-        ''
-      );
-    },
-  },
-  {
-    accessorKey: 'updated_at',
-    header: ({ column }) => (
-      <Button variant='ghost' onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-        Updated
-        <ArrowUpDown className='ml-2 h-4 w-4' />
-      </Button>
-    ),
-    cell: ({ cell }) => {
-      const value = cell.getValue();
-      return value ? (
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>{moment().diff(value, 'hours') < 24 ? moment(value).fromNow() : moment(value).format('MMM D, YYYY [at] HH:mm')}</TooltipTrigger>
-            <TooltipContent>
-              <>{value}</>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      ) : (
-        ''
-      );
-    },
-  },
-  {
     id: 'actions',
     cell: ({ row }) => {
       const item = row.original;
