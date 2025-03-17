@@ -22,6 +22,7 @@ export type Strategy = {
   team: { slug: string; name: string };
   created_at: string;
   updated_at: string;
+  slots: { id: number, name: string }[]
 };
 
 export const columns: ColumnDef<Strategy>[] = [
@@ -29,7 +30,7 @@ export const columns: ColumnDef<Strategy>[] = [
     accessorKey: 'name',
     header: 'Name',
     cell: ({ cell, row }) => {
-      const slug = row.getValue('slug');
+      const slug = row.original.slug;
       const value = cell.getValue();
       return (
         value && (
@@ -49,6 +50,12 @@ export const columns: ColumnDef<Strategy>[] = [
   {
     accessorKey: 'root_slot',
     header: 'Root Slot',
+    cell: ({ cell, row }) => {
+      const value = cell.getValue();
+      if (row.original.slots && value) {
+        return row.original.slots.find((item: { id: number }) => item.id === value)!.name
+      }
+    }
   },
   // TODO: Uncomment once teams are implemented.
   // {
