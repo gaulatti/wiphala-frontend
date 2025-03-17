@@ -26,6 +26,7 @@ export type Playlist = {
   strategy: { slug: string; name: string };
   created_at: string;
   updated_at: string;
+  context: Record<string, any>;
 };
 
 export const columns: ColumnDef<Playlist>[] = [
@@ -48,10 +49,17 @@ export const columns: ColumnDef<Playlist>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-  },
-  {
-    accessorKey: 'current_slot',
-    header: 'Current Slot',
+    cell: ({ cell, row }) => {
+      /**
+       * If the status is RUNNING and there is a current slot and context, display the current slot name.
+       */
+      if (cell.getValue() === 'RUNNING' && row.original.current_slot && row.original.context) {
+        const { name } = row.original.context.sequence.find((item: { slot: number }) => item.slot === row.original.current_slot)
+        return `In Progress: ${name}`
+      }
+
+      return cell.getValue();
+    }
   },
   {
     accessorKey: 'strategy',
