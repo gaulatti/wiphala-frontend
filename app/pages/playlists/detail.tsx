@@ -1,13 +1,53 @@
+import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { Box, Card, Flex, Heading } from '@radix-ui/themes';
 import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
-import { useCallback, type JSX } from 'react';
+import { useCallback, useState, type JSX } from 'react';
 import { NavLink, useParams } from 'react-router';
 import { Method, useAPI } from '~/clients/api';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { Separator } from '~/components/ui/separator';
 import { SidebarTrigger } from '~/components/ui/sidebar';
-import { WorkflowGraph } from '~/utils/workflows';
+import { WorkflowGraph, type Slot } from '~/utils/workflows';
+
+const PlaylistDetails = () => {
+  return <>
+    <div className='flex items-center mb-3'>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink style={{ lineHeight: '1rem' }}>
+            <NavLink to={`/playlists`}>
+              <Flex gap='3'>
+                <ArrowLeftIcon width="18" height="18" /> Back to Playlists
+              </Flex>
+              </NavLink>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div><Heading size='7'>Playlist Detail</Heading></>
+}
+
+const SlotDetails = ({ setCurrentNode, node }: { setCurrentNode: (key: number | null) => void, node: Slot }) => {
+  return <>
+    <div className='flex items-center mb-3'>
+      <Breadcrumb>
+        <BreadcrumbList>
+          <BreadcrumbItem>
+            <BreadcrumbLink onClick={() => setCurrentNode(null)} style={{ lineHeight: '1rem' }}>
+              <Flex gap='3'>
+                <ArrowLeftIcon width="18" height="18" /> Back to Playlist Details
+              </Flex>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+    </div>
+    <Heading size='7'>Slot Detail</Heading>
+    <pre>{JSON.stringify(node, null, 2)}</pre></>
+}
+
 
 /**
  * PlaylistDetail component renders the detailed view of a playlist.
@@ -32,9 +72,10 @@ import { WorkflowGraph } from '~/utils/workflows';
 const PlaylistDetail = (): JSX.Element => {
   const { slug } = useParams();
   const { data } = useAPI(Method.GET, [], `playlists/${slug}`);
+  const [currentNode, setCurrentNode] = useState<number | null>(null);
 
-  const onNodeClick = useCallback((event, node) => {
-    console.log({ event, node })
+  const onNodeClick = useCallback((_: Event, node: { id: number }) => {
+    setCurrentNode(node?.id)
   }, [])
 
   return (
@@ -65,9 +106,6 @@ const PlaylistDetail = (): JSX.Element => {
         </div>
       </header>
       <Flex gap='3' direction={'column'} className='m-4' height={'100%'}>
-        <Box className='mb-4'>
-          <Heading size='7'>Playlist Detail</Heading>
-        </Box>
         <Flex gap='3' className='h-full' direction={{ initial: 'column', lg: 'row' }}>
           <Box width={{ initial: '100%', lg: '50%' }} height={'100%'}>
             <Card className='h-full'>
@@ -77,7 +115,9 @@ const PlaylistDetail = (): JSX.Element => {
             </Card>
           </Box>
           <Box width={{ initial: '100%', lg: '50%' }}>
-            <Card className='h-full'>Details</Card>
+            <Card className='h-full'>
+              {currentNode ? <SlotDetails setCurrentNode={setCurrentNode} node={data?.context?.sequence.filter((item: Slot) => item.id == currentNode)} /> : <PlaylistDetails />}
+            </Card>
           </Box>
         </Flex>
       </Flex>
