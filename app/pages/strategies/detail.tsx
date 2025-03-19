@@ -28,7 +28,7 @@ const StrategyDetail = () => {
           </BreadcrumbList>
         </Breadcrumb>
       </div>
-    </header >
+    </header>
     <pre>{JSON.stringify(data, null, 2)}</pre>
   </>;
 };
