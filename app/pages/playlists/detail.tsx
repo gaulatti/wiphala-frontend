@@ -1,5 +1,5 @@
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
-import { Box, Card, Flex, Heading } from '@radix-ui/themes';
+import { Box, Button, Card, Dialog, Flex, Heading } from '@radix-ui/themes';
 import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useCallback, useState, type JSX } from 'react';
@@ -17,7 +17,7 @@ import type { Route } from './+types/detail';
  * @param {} args - The metadata arguments provided by the route.
  * @returns An array of metadata objects, including the title for the page.
  */
-export function meta({}: Route.MetaArgs) {
+export function meta({ }: Route.MetaArgs) {
   return [
     { title: "Playlist Details - Wiphala" },
   ];
@@ -30,10 +30,10 @@ const PlaylistDetails = () => {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild style={{ lineHeight: '1rem' }}>
-            <NavLink to={`/playlists`}>
-              <Flex gap='3'>
-                <ArrowLeftIcon width="18" height="18" /> Back to Playlists
-              </Flex>
+              <NavLink to={`/playlists`}>
+                <Flex gap='3'>
+                  <ArrowLeftIcon width="18" height="18" /> Back to Playlists
+                </Flex>
               </NavLink>
             </BreadcrumbLink>
           </BreadcrumbItem>
@@ -57,8 +57,19 @@ const SlotDetails = ({ setCurrentNode, node }: { setCurrentNode: (key: number | 
         </BreadcrumbList>
       </Breadcrumb>
     </div>
-    <Heading size='7'>Slot Detail</Heading>
-    <pre>{JSON.stringify(node, null, 2)}</pre></>
+    <Heading size='7' className='mb-4'>Slot: {node.name}</Heading>
+    <Dialog.Root>
+      <Dialog.Trigger>
+        <Button>View Slot Output</Button>
+      </Dialog.Trigger>
+      <Dialog.Content maxWidth="90vw" maxHeight="90vh" size="4">
+        <Flex direction="column" gap="3" width="100%" height="100%">
+          <Dialog.Title>Slot Output: {node.name}</Dialog.Title>
+          <pre style={{ maxWidth: '90vw', maxHeight: '90%' }} >{JSON.stringify(node, null, 2)}</pre>
+        </Flex>
+      </Dialog.Content>
+    </Dialog.Root>
+  </>
 }
 
 
@@ -129,7 +140,7 @@ const PlaylistDetail = (): JSX.Element => {
           </Box>
           <Box width={{ initial: '100%', lg: '50%' }}>
             <Card className='h-full'>
-              {currentNode ? <SlotDetails setCurrentNode={setCurrentNode} node={data?.context?.sequence.filter((item: Slot) => item.id == currentNode)} /> : <PlaylistDetails />}
+              {currentNode ? <SlotDetails setCurrentNode={setCurrentNode} node={data?.context?.sequence.find((item: Slot) => item.id == currentNode)} /> : <PlaylistDetails />}
             </Card>
           </Box>
         </Flex>
