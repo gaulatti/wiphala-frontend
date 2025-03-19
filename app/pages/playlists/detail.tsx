@@ -12,11 +12,11 @@ import { WorkflowGraph, type Slot } from '~/utils/workflows';
 
 const PlaylistDetails = () => {
   return <>
-    <div className='flex items-center mb-3'>
+    <div className='flex items-center mb-3 mt-1'>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
-            <BreadcrumbLink style={{ lineHeight: '1rem' }}>
+            <BreadcrumbLink asChild style={{ lineHeight: '1rem' }}>
             <NavLink to={`/playlists`}>
               <Flex gap='3'>
                 <ArrowLeftIcon width="18" height="18" /> Back to Playlists
@@ -31,7 +31,7 @@ const PlaylistDetails = () => {
 
 const SlotDetails = ({ setCurrentNode, node }: { setCurrentNode: (key: number | null) => void, node: Slot }) => {
   return <>
-    <div className='flex items-center mb-3'>
+    <div className='flex items-center mb-3 mt-1'>
       <Breadcrumb>
         <BreadcrumbList>
           <BreadcrumbItem>
