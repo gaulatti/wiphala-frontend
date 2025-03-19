@@ -97,7 +97,7 @@ const computeLayout = (sequence: Slot[], containerWidth: number) => {
  * <WorkflowGraph sequence={sequence} />
  * ```
  */
-const WorkflowGraph = ({ sequence, onNodeClick }: { sequence: Slot[], onNodeClick: () => void }): JSX.Element => {
+const WorkflowGraph = ({ sequence, onNodeClick }: { sequence: Slot[], onNodeClick: (event: any, target: any) => void }): JSX.Element => {
   const { fitView } = useReactFlow();
   const [{ nodes, edges }, setGraph] = useState<{ nodes: Node[]; edges: Edge[] }>({ nodes: [], edges: [] });
   const [nodesState, setNodes] = useNodesState(nodes);
@@ -130,6 +130,9 @@ const WorkflowGraph = ({ sequence, onNodeClick }: { sequence: Slot[], onNodeClic
       edges={edgesState}
       onNodeClick={onNodeClick}
       fitView
+      onPaneClick={(event) => {
+        onNodeClick(event, null)
+      }}
       nodesDraggable={false}
       nodesConnectable={false}
       elementsSelectable={false}
