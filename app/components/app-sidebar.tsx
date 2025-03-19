@@ -1,4 +1,4 @@
-import { AudioWaveform, Command, Frame, GalleryVerticalEnd, Map, PieChart, SquareTerminal } from 'lucide-react';
+import { Activity, AudioWaveform, Command, GalleryVerticalEnd, LayoutList, Network, Newspaper, Radar, Tv, User } from 'lucide-react';
 import * as React from 'react';
 import { NavLink } from 'react-router';
 
@@ -61,31 +61,41 @@ const data = {
     {
       title: 'Playlists',
       url: '/playlists',
-      icon: SquareTerminal,
+      icon: LayoutList,
       isActive: true,
     },
     {
       title: 'Strategies',
       url: '/strategies',
-      icon: SquareTerminal,
+      icon: Network,
       isActive: true,
     },
   ],
   projects: [
     {
-      name: 'Design Engineering',
-      url: '#',
-      icon: Frame,
+      name: 'Autostrada',
+      url: '//autostrada.gaulatti.com',
+      icon: Activity,
     },
     {
-      name: 'Sales & Marketing',
-      url: '#',
-      icon: PieChart,
+      name: 'Ariston',
+      url: '//ariston.gaulatti.com',
+      icon: Newspaper,
     },
     {
-      name: 'Travel',
-      url: '#',
-      icon: Map,
+      name: 'Alcántara',
+      url: '//alcantara.gaulatti.com',
+      icon: Tv,
+    },
+    {
+      name: 'Monitor',
+      url: '//monitor.gaulatti.com',
+      icon: Radar,
+    },
+    {
+      name: 'Pompeii',
+      url: '//pompeii.gaulatti.com',
+      icon: User,
     },
   ],
 };
