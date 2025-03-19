@@ -3,6 +3,17 @@ import { Method, useAPI } from '~/clients/api';
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { Separator } from '~/components/ui/separator';
 import { SidebarTrigger } from '~/components/ui/sidebar';
+import type { Route } from './+types/detail';
+
+/**
+ * Generates metadata for the "Strategy Details" page.
+ *
+ * @param {} args - The metadata arguments provided by the route.
+ * @returns An array containing metadata objects, including the page title.
+ */
+export function meta({}: Route.MetaArgs) {
+  return [{ title: 'Strategy Details - Wiphala' }];
+}
 
 const StrategyDetail = () => {
   const { slug } = useParams();

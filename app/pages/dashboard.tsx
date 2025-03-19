@@ -1,6 +1,17 @@
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '~/components/ui/breadcrumb';
 import { Separator } from '~/components/ui/separator';
 import { SidebarTrigger } from '~/components/ui/sidebar';
+import type { Route } from './+types/dashboard';
+
+/**
+ * Generates metadata for the dashboard route.
+ *
+ * @param args - The metadata arguments for the route (currently unused).
+ * @returns An array containing metadata objects, such as the page title.
+ */
+export function meta({}: Route.MetaArgs) {
+  return [{ title: 'Wiphala' }];
+}
 
 export default function Page() {
   return (

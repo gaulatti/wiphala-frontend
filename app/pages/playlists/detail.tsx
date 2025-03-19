@@ -9,6 +9,19 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbP
 import { Separator } from '~/components/ui/separator';
 import { SidebarTrigger } from '~/components/ui/sidebar';
 import { WorkflowGraph, type Slot } from '~/utils/workflows';
+import type { Route } from './+types/detail';
+
+/**
+ * Generates metadata for the playlist details page.
+ *
+ * @param {} args - The metadata arguments provided by the route.
+ * @returns An array of metadata objects, including the title for the page.
+ */
+export function meta({}: Route.MetaArgs) {
+  return [
+    { title: "Playlist Details - Wiphala" },
+  ];
+}
 
 const PlaylistDetails = () => {
   return <>

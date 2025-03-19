@@ -11,6 +11,18 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '~/comp
 import { useRandom } from '~/hooks/useRandom';
 import { useSSE } from '~/hooks/useSSE';
 
+/**
+ * Represents a playlist with metadata and status information.
+ *
+ * @typedef Playlist
+ * @property {string} slug - A unique identifier for the playlist.
+ * @property {'CREATED' | 'RUNNING' | 'FAILED' | 'COMPLETE'} status - The current status of the playlist.
+ * @property {number | null} current_slot - The current slot number in the playlist, or `null` if not applicable.
+ * @property {{ slug: string; name: string }} strategy - The strategy associated with the playlist, including its slug and name.
+ * @property {string} created_at - The timestamp when the playlist was created.
+ * @property {string} updated_at - The timestamp when the playlist was last updated.
+ * @property {Record<string, any>} context - Additional context or metadata associated with the playlist.
+ */
 export type Playlist = {
   slug: string;
   status: 'CREATED' | 'RUNNING' | 'FAILED' | 'COMPLETE';
@@ -21,6 +33,36 @@ export type Playlist = {
   context: Record<string, any>;
 };
 
+/**
+ * Defines the column configuration for a playlist table.
+ * Each column specifies how data is accessed, displayed, and optionally formatted.
+ *
+ * Columns:
+ * - **Slug**:
+ *   - `accessorKey`: 'slug'
+ *   - Displays the playlist slug as a clickable link that navigates to the playlist's detail page.
+ *
+ * - **Status**:
+ *   - `accessorKey`: 'status'
+ *   - Displays the playlist's status. If the status is `RUNNING` and there is a current slot and context,
+ *     it shows the name of the current slot in progress.
+ *
+ * - **Strategy**:
+ *   - `accessorKey`: 'strategy'
+ *   - Displays the strategy associated with the playlist as a clickable link that navigates to the strategy's detail page.
+ *
+ * - **Created At**:
+ *   - `accessorKey`: 'created_at'
+ *   - Displays the creation timestamp. If the timestamp is within the last 24 hours, it shows a relative time (e.g., "5 hours ago").
+ *     Otherwise, it shows the formatted date and time. A tooltip provides the full timestamp.
+ *   - Includes a sortable header button.
+ *
+ * - **Updated At**:
+ *   - `accessorKey`: 'updated_at'
+ *   - Displays the last updated timestamp. If the timestamp is within the last 24 hours, it shows a relative time (e.g., "5 hours ago").
+ *     Otherwise, it shows the formatted date and time. A tooltip provides the full timestamp.
+ *   - Includes a sortable header button.
+ */
 export const columns: ColumnDef<Playlist>[] = [
   {
     accessorKey: 'slug',
@@ -119,6 +161,37 @@ export const columns: ColumnDef<Playlist>[] = [
   }
 ];
 
+/**
+ * DataTable component renders a paginated and sortable table for displaying playlist data.
+ *
+ * This component fetches data from an API endpoint using query parameters such as page, page size,
+ * randomization, and sorting options. It listens to server-sent events (SSE) to refresh the table
+ * when a specific action is triggered. The table supports manual pagination and sorting.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} The rendered DataTable component.
+ *
+ * @remarks
+ * - The table uses `useReactTable` for managing table state and rendering.
+ * - Server-sent events are used to trigger table refreshes dynamically.
+ * - Pagination and sorting are handled manually via API query parameters.
+ *
+ * @example
+ * ```tsx
+ * <DataTable />
+ * ```
+ *
+ * @dependencies
+ * - `useState`, `useEffect`, `useMemo` from React for state and memoization.
+ * - `useAPI` for fetching data from the API.
+ * - `useSSE` for handling server-sent events.
+ * - `useReactTable` for table management.
+ *
+ * @internal
+ * - The `columns` variable is assumed to be defined elsewhere in the scope.
+ * - The `PaginationControls` component is used for pagination UI.
+ */
 const DataTable = () => {
   const [page, setPage] = useState(1);
   const [pageSize] = useState(20);
