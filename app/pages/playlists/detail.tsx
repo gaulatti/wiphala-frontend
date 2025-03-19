@@ -1,5 +1,5 @@
-import { ArrowLeftIcon } from "@radix-ui/react-icons";
-import { Box, Button, Card, Dialog, Flex, Heading } from '@radix-ui/themes';
+import { ArrowLeftIcon, Cross1Icon } from "@radix-ui/react-icons";
+import { Box, Button, Card, Code, Dialog, Flex, Heading, ScrollArea } from '@radix-ui/themes';
 import { ReactFlowProvider } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
 import { useCallback, useState, type JSX } from 'react';
@@ -64,8 +64,13 @@ const SlotDetails = ({ setCurrentNode, node }: { setCurrentNode: (key: number | 
       </Dialog.Trigger>
       <Dialog.Content maxWidth="90vw" maxHeight="90vh" size="4">
         <Flex direction="column" gap="3" width="100%" height="100%">
-          <Dialog.Title>Slot Output: {node.name}</Dialog.Title>
-          <pre style={{ maxWidth: '90vw', maxHeight: '90%' }} >{JSON.stringify(node, null, 2)}</pre>
+          <Flex direction="row" align="center" justify="between">
+            <Dialog.Title>Slot Output: {node.name}</Dialog.Title>
+            <Dialog.Close><Cross1Icon className='mb-3' /></Dialog.Close>
+          </Flex>
+          <ScrollArea type="always" scrollbars="vertical" style={{ height: '70vh' }}>
+            <Code><pre style={{ maxWidth: '90vw', maxHeight: '90%' }}>{JSON.stringify(node, null, 2)}</pre></Code>
+          </ScrollArea>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
