@@ -2,6 +2,7 @@ import { ReactFlow, useEdgesState, useNodesState, useReactFlow, type Edge, type 
 import '@xyflow/react/dist/style.css';
 import { stratify, tree } from 'd3-hierarchy';
 import { useEffect, useState, type JSX } from 'react';
+import { useDarkMode } from '~/hooks/useDarkMode';
 
 /**
  * Represents a slot in the playlist system.
@@ -126,6 +127,7 @@ const WorkflowGraph = ({ sequence, onNodeClick }: { sequence: Slot[], onNodeClic
 
   return (
     <ReactFlow
+      colorMode='system'
       nodes={nodesState}
       edges={edgesState}
       onNodeClick={onNodeClick}
